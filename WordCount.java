@@ -8,7 +8,7 @@ public class WordCount {
     public static void main(String[] args) {
         try {
             // Specify the path to the text file
-            String filePath = "path/to/your/file.txt";
+            String filePath = "new.txt";
 
             // Create a File object
             File file = new File(filePath);

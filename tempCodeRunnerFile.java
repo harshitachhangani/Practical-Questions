@@ -1,40 +1,84 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-public class hash {
-	/* input Scanner for reading input for the program */
-	private static Scanner inputScanner;
-	public static void main(String[] args) {
-		/* Create a phone book Map */
-		Map<String, String> phoneBook = new HashMap<String, String>();
-		/* Create the input Scanner instance */
-		inputScanner = new Scanner(System.in);	
-		/* Read the number of input phone numbers */
-		int numFriends = inputScanner.nextInt();
-		/* Go to the next line of input */
-		inputScanner.nextLine();
-		/* Loop thru the number of friends, reading the name and phone number, and adding to the phoneBook */
-		for (int i = 0; i < numFriends; i++) {
-			/* Read the name of the friend */
-			String name = inputScanner.nextLine();
-			/* Read the phone number */
-			String phone = inputScanner.nextLine();
-			/* Put the name and phone number into the phoneBook */
-			phoneBook.put(name, phone);
-		}
-		/* Loop while there is still more input data */
-		while (inputScanner.hasNext()) {
-			/* Read the person to search for a phone number */
-			String inputName = inputScanner.nextLine();
-			/* Does the name exist in the phone Book */
-			if (phoneBook.containsKey(inputName)) {
-				/* Yes, print out the name and phone number */
-				System.out.println(inputName + "=" + phoneBook.get(inputName));
-			} else {
-				/* Print out error message if not found */
-				System.out.println("Not found");
-			}
-		}
-	}
+class AgeNotWithinRangeException extends Exception {
+    public AgeNotWithinRangeException(String message) {
+        super(message);
+    }
 }
 
+class NameNotValidException extends Exception {
+    public NameNotValidException(String message) {
+        super(message);
+    }
+}
+
+class Student {
+    private int rollNo;
+    private String name;
+    private int age;
+    private String course;
+
+    public Student(int rollNo, String name, int age, String course) throws AgeNotWithinRangeException, NameNotValidException {
+        this.rollNo = rollNo;
+        if (age < 15 || age > 21) {
+            throw new AgeNotWithinRangeException("Age is not within the range of 15 to 21.");
+        }
+        this.age = age;
+
+        if (!isChar(name)) {
+            throw new NameNotValidException("Name is not valid. It should only contain alphabets and spaces.");
+        }
+        this.name = name;
+
+        this.course = course;
+    }
+
+    public static boolean isChar(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isLetter(str.charAt(i)) || !Character.isAlphabetic(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int getRollNo() {
+        return rollNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+}
+
+public class AgeNameException {
+    public static void main(String[] args) {
+        try {
+            Student student1 = new Student(1, "John Doe", 18, "Computer Science");
+            System.out.println("Student 1:");
+            System.out.println("Roll No: " + student1.getRollNo());
+            System.out.println("Name: " + student1.getName());
+            System.out.println("Age: " + student1.getAge());
+            System.out.println("Course: " + student1.getCourse());
+            System.out.println();
+
+            Student student2 = new Student(2, "Jane Smith", 14, "Electrical Engineering");
+            System.out.println("Student 2:");
+            System.out.println("Roll No: " + student2.getRollNo());
+            System.out.println("Name: " + student2.getName());
+            System.out.println("Age: " + student2.getAge());
+            System.out.println("Course: " + student2.getCourse());
+            System.out.println();
+        } catch (AgeNotWithinRangeException e) {
+            System.out.println("Exception: " + e.getMessage());
+        } catch (NameNotValidException e) {
+            System.out.println("Exception: " + e.getMessage());
+        }
+    }
+}

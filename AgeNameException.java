@@ -1,84 +1,92 @@
-class AgeNotWithinRangeException extends Exception {
-    public AgeNotWithinRangeException(String message) {
-        super(message);
+
+import java.io.*;
+import java.util.*;
+class AgeNotWithInRangeException extends Exception
+{
+    public String validage()
+    {
+        return ("Age is not between 15 and 21 … Please ReEnter the Age");
     }
 }
-
-class NameNotValidException extends Exception {
-    public NameNotValidException(String message) {
-        super(message);
+class NameNotValidException extends Exception
+{
+    public String validname()
+    {
+        return("Name is not Valid … Please ReEnter the Name");
     }
 }
-
-class Student {
-    private int rollNo;
-    private String name;
-    private int age;
-    private String course;
-
-    public Student(int rollNo, String name, int age, String course) throws AgeNotWithinRangeException, NameNotValidException {
-        this.rollNo = rollNo;
-        if (age < 15 || age > 21) {
-            throw new AgeNotWithinRangeException("Age is not within the range of 15 to 21.");
+class Student
+{
+    int roll,age;
+    String name,course;
+    Student()
+    {
+        roll=0;
+        name=null;
+        age=0;
+        course=null;
+    }
+    Student(int r,String n,int a,String c)
+    {
+        roll=r;
+        course=c;
+        int l,temp=0;
+        l=n.length();
+        for(int i=0;i<l;i++)
+        {
+            char ch;
+            ch=n.charAt(i);
+            if(ch<'A' || ch>'Z' && ch<'a' || ch>'z')
+                temp=1;
         }
-        this.age = age;
-
-        if (!isChar(name)) {
-            throw new NameNotValidException("Name is not valid. It should only contain alphabets and spaces.");
+        /*———-Checking Name——————–*/
+        try
+        {
+            if(temp==1)
+                throw new NameNotValidException();
+            else
+                name=n;
         }
-        this.name = name;
-
-        this.course = course;
-    }
-
-    public static boolean isChar(String str) {
-        for (int i = 0; i < str.length(); i++) {
-            if (!Character.isLetter(str.charAt(i)) || !Character.isAlphabetic(str.charAt(i))) {
-                return false;
-            }
+        catch(NameNotValidException e2)
+        {
+            System.out.println(e2);
         }
-        return true;
+        /*———-Checking Age——————–*/
+        try
+        {
+            if(a>=15 && a<=21)
+                age=a;
+            else
+                throw new AgeNotWithInRangeException();
+        }
+        catch(AgeNotWithInRangeException e1)
+        {
+            System.out.println(e1);
+        }
     }
-
-    public int getRollNo() {
-        return rollNo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public String getCourse() {
-        return course;
+    void display()
+    {
+        System.out.println("roll Name Age Course");
+        System.out.println("————————————————-");
+        System.out.println(roll+" "+name+" "+age+" "+course);
     }
 }
+class AgeNameException
+{
+    public static void main(String args[])throws IOException
+    {
+        Scanner sc =  new Scanner(System.in);
+        int r,a;
+        String n,c;
 
-public class AgeNameException {
-    public static void main(String[] args) {
-        try {
-            Student student1 = new Student(1, "John Doe", 18, "Computer Science");
-            System.out.println("Student 1:");
-            System.out.println("Roll No: " + student1.getRollNo());
-            System.out.println("Name: " + student1.getName());
-            System.out.println("Age: " + student1.getAge());
-            System.out.println("Course: " + student1.getCourse());
-            System.out.println();
-
-            Student student2 = new Student(2, "Jane Smith", 14, "Electrical Engineering");
-            System.out.println("Student 2:");
-            System.out.println("Roll No: " + student2.getRollNo());
-            System.out.println("Name: " + student2.getName());
-            System.out.println("Age: " + student2.getAge());
-            System.out.println("Course: " + student2.getCourse());
-            System.out.println();
-        } catch (AgeNotWithinRangeException e) {
-            System.out.println("Exception: " + e.getMessage());
-        } catch (NameNotValidException e) {
-            System.out.println("Exception: " + e.getMessage());
-        }
+        System.out.println("Enter roll,name,age,course");
+        r=sc.nextInt();
+        sc.nextLine();
+        n=sc.nextLine();
+        a=sc.nextInt();
+        sc.nextLine();
+        c=sc.nextLine();
+        Student s=new Student(r,n,a,c);
+        s.display();
     }
 }
